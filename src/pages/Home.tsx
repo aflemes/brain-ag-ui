@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import type { SvgIconProps } from '@mui/material';
-import { Person, Landscape, Grass, CalendarMonth } from '@mui/icons-material';
+import { Person, Landscape, Grass, CalendarMonth, Agriculture } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import type { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -50,6 +50,12 @@ export default function Home() {
             icon: <CalendarMonth sx={{ fontSize: 40 }} />,
             value: '...',
             path: '/'
+        },
+        {
+            title: 'Total de Hectares',
+            icon: <Agriculture sx={{ fontSize: 40 }} />,
+            value: '...',
+            path: '/'
         }
     ]);
 
@@ -63,11 +69,15 @@ export default function Home() {
                     SafraService.getAll()
                 ]);
 
+                // Calculate total hectares
+                const totalHectares = propriedades.data.reduce((acc, prop) => acc + prop.area_total, 0);
+
                 setStats(prevStats => [
                     { ...prevStats[0], value: produtores.data.length.toString() },
                     { ...prevStats[1], value: propriedades.data.length.toString() },
                     { ...prevStats[2], value: culturas.data.length.toString() },
-                    { ...prevStats[3], value: safras.data.length.toString() }
+                    { ...prevStats[3], value: safras.data.length.toString() },
+                    { ...prevStats[4], value: totalHectares.toString() }
                 ]);
 
                 // Calculate state distribution
